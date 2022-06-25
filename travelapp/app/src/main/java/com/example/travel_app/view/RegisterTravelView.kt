@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,16 +14,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.travel_app.ScreenManager
-import com.example.travel_app.components.PasswordField
+import com.example.travel_app.viewModel.TravelFactory
+import com.example.travel_app.viewModel.TravelViewModel
 import com.example.travel_app.viewModel.UserFactory
-import com.example.travel_app.viewModel.UserViewModel
 
 @Composable
-fun RegisterUserView(navController: NavController) {
+fun RegisterTravelView(navController: NavController) {
     val ctx = LocalContext.current
     val app = ctx.applicationContext as Application
 
-    val user: UserViewModel = viewModel(factory = UserFactory(app))
+    val travel: TravelViewModel = viewModel(factory = TravelFactory(app))
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -30,46 +31,50 @@ fun RegisterUserView(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally) {
         Column(Modifier.padding(all= 60.dp)) {
             OutlinedTextField(modifier = Modifier.padding(10.dp),
-                value = user.name,
+                value = travel.destiny,
                 label = {
-                    Text(text = "Nome completo")
+                    Text(text = "Destino")
                 },
-                onValueChange = { user.name =it; })
+                onValueChange = { travel.destiny =it; })
             OutlinedTextField(modifier = Modifier.padding(10.dp),
-                value = user.userName,
+                value = travel.budget.toString(),
                 label = {
-                    Text(text = "Usuario")
+                    Text(text = "Valor da viagem")
                 },
-                onValueChange = { user.userName =it; })
-            PasswordField(value = user.password,
-                onChange = { user.password = it},
-                modifier = Modifier.padding(10.dp));
+                onValueChange = { travel.budget = Integer.parseInt(it).toDouble(); })
             OutlinedTextField(modifier = Modifier.padding(10.dp),
-                value = user.birthday,
+                value = travel.comingDate,
                 label = {
-                    Text(text = "Data de aniversario")
+                    Text(text = "Data de chegada")
                 },
-                onValueChange = { user.userName =it; })
+                onValueChange = { travel.comingDate = it; })
             OutlinedTextField(modifier = Modifier.padding(10.dp),
-                value = user.email,
+                value = travel.departureDate,
                 label = {
-                    Text(text = "Email")
+                    Text(text = "Data de partida")
                 },
-                onValueChange = { user.userName =it; })
+                onValueChange = { travel.departureDate = it; })
+            Text(text = "Viagem de lazer")
+            RadioButton(selected = false,
+                onClick = { /*TODO*/ },
+
+                )
+            Text(text = "Viagem de negocio")
+            RadioButton(selected = false,
+                onClick = { /*TODO*/ },
+
+                )
         }
         Row(Modifier.padding(all= 60.dp)) {
             OutlinedButton(modifier = Modifier.padding(all= 5.dp),onClick =  {
-                navController.navigate(ScreenManager.Login.route) {
-
-                }
+                navController.navigate(ScreenManager.Travel.route) { }
             }) {
                 Text(text = "Voltar")
             }
 
             OutlinedButton(modifier = Modifier.padding(all= 5.dp), onClick =  {
-                user.register()
-                navController.navigate(ScreenManager.Login.route) {
-
+                navController.navigate(ScreenManager.Travel.route) {
+                    travel.register()
                 }
             }) {
                 Text(text = "Cadastrar")

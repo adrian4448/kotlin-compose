@@ -3,8 +3,14 @@ package com.example.travel_app.viewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.*
+import androidx.lifecycle.viewModelScope
+import com.example.travel_app.entity.User
+import com.example.travel_app.repository.UserRepository
+import kotlinx.coroutines.launch
 
-class UserViewModel : ViewModel() {
+class UserViewModel(
+    private val repository: UserRepository
+) : ViewModel() {
 
     var userName by mutableStateOf("")
 
@@ -16,9 +22,22 @@ class UserViewModel : ViewModel() {
 
     var email by mutableStateOf("")
 
+    fun register() {
+        val user = User(userName, password, name, email)
+        viewModelScope.launch {
+            repository.save(user)
+        }
+    }
 
-    fun registrar() {
-
-        // api ou banco de dados ou regra de negócio
+    fun login(onSuccess: () -> Unit, onFail: () -> Unit) {
+        viewModelScope.launch {
+            val userFound = repository.findUserByUsernameAndPassword(userName, password)
+            if (userFound == null) {
+                onFail()
+            }
+            else {
+                onSuccess()
+            }
+        }
     }
 }

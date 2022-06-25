@@ -14,4 +14,6 @@ sealed class ScreenManager(val route: String,
 
     object Login : ScreenManager("login", "Login", Icons.Filled.Face)
     object Register : ScreenManager("register", "Register", Icons.Filled.Face)
+    object RegisterTravel : ScreenManager("registerTravel", "RegisterTravel", Icons.Filled.Face)
+
 }
