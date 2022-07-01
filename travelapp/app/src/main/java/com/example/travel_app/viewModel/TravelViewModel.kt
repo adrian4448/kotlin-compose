@@ -29,9 +29,16 @@ class TravelViewModel(
     var user by mutableStateOf("")
 
     fun register() {
-        val travel = Travel(destiny, type, comingDate, departureDate, user.toInt())
+        val travel = Travel(destiny, TipoViagem.LAZER, comingDate, departureDate, 1, 0.0)
         viewModelScope.launch {
             repository.save(travel)
+        }
+    }
+
+    fun findAllTravels(onSuccess: (travels: List<Travel>) -> Unit) {
+        viewModelScope.launch {
+            val travels = repository.findAll()
+            onSuccess(travels)
         }
     }
 }

@@ -15,7 +15,8 @@ data class Travel(
     val type: TipoViagem,
     val comingDate: String,
     val departureDate: String,
-    val userId: Int
+    val userId: Int,
+    val budget: Double
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

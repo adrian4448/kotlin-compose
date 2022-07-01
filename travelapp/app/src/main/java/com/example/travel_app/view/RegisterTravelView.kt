@@ -7,6 +7,8 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.travel_app.ScreenManager
+import com.example.travel_app.entity.TipoViagem
 import com.example.travel_app.viewModel.TravelFactory
 import com.example.travel_app.viewModel.TravelViewModel
 import com.example.travel_app.viewModel.UserFactory
@@ -22,6 +25,7 @@ import com.example.travel_app.viewModel.UserFactory
 fun RegisterTravelView(navController: NavController) {
     val ctx = LocalContext.current
     val app = ctx.applicationContext as Application
+    var selectedOption = remember { mutableStateOf("") }
 
     val travel: TravelViewModel = viewModel(factory = TravelFactory(app))
 
@@ -54,16 +58,20 @@ fun RegisterTravelView(navController: NavController) {
                     Text(text = "Data de partida")
                 },
                 onValueChange = { travel.departureDate = it; })
-            Text(text = "Viagem de lazer")
-            RadioButton(selected = false,
-                onClick = { /*TODO*/ },
-
-                )
-            Text(text = "Viagem de negocio")
-            RadioButton(selected = false,
-                onClick = { /*TODO*/ },
-
-                )
+            Row(Modifier.padding(start = 10.dp)) {
+                Text(text = "Lazer")
+                RadioButton(modifier = Modifier.padding(start = 10.dp, end = 10.dp),
+                    selected = selectedOption.value == "Viagem de lazer",
+                    onClick = {
+                        selectedOption.value = "Viagem de lazer"
+                    })
+                Text(text = "Negocio")
+                RadioButton(modifier = Modifier.padding(start = 10.dp),
+                    selected =  selectedOption.value == "Viagem de negocio",
+                    onClick = {
+                        selectedOption.value = "Viagem de negocio"
+                    })
+            }
         }
         Row(Modifier.padding(all= 60.dp)) {
             OutlinedButton(modifier = Modifier.padding(all= 5.dp),onClick =  {
@@ -74,6 +82,12 @@ fun RegisterTravelView(navController: NavController) {
 
             OutlinedButton(modifier = Modifier.padding(all= 5.dp), onClick =  {
                 navController.navigate(ScreenManager.Travel.route) {
+                    if(selectedOption.value == "Viagem de lazer") {
+                        travel.type = TipoViagem.LAZER
+                    }else {
+                        travel.type = TipoViagem.NEGOCIO
+                    }
+
                     travel.register()
                 }
             }) {

@@ -5,18 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.travel_app.entity.Category
+import com.example.travel_app.entity.Spent
 import com.example.travel_app.entity.Travel
 import com.example.travel_app.entity.User
 
-@Database(entities = arrayOf(User::class, Travel::class, Category::class), version = 1 )
+@Database(entities = arrayOf(User::class, Travel::class ,Spent::class ,Category::class), version = 5 )
 abstract class AppDatabaseConnection: RoomDatabase() {
 
     abstract fun userDao(): UserDao
-    //abstract fun outroDao(): OutroDao
 
     abstract fun travelDao(): TravelDao
 
     abstract fun categoryDao(): CategoryDao
+
+    abstract fun spentDao(): SpentDao
 
     // Desing Pattern - Singleton
     companion object {
@@ -33,7 +35,9 @@ abstract class AppDatabaseConnection: RoomDatabase() {
                     context,
                     AppDatabaseConnection::class.java,
                     "meu-database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 connection = instance
                 return instance
             }

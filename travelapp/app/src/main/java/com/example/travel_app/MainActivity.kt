@@ -4,17 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.*
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.travel_app.ui.theme.TravelappTheme
 import com.example.travel_app.view.*
@@ -44,6 +40,26 @@ fun LoginNavigation(navController: NavHostController) {
         composable(ScreenManager.Home.route) { HomeView(navController) }
         composable(ScreenManager.Travel.route) { TravelView(navController) }
         composable(ScreenManager.RegisterTravel.route) { RegisterTravelView(navController) }
+        composable(ScreenManager.Spent.route + "/" + "{travelId}",
+            arguments = listOf(
+            navArgument("travelId") {
+                type = NavType.IntType
+            })
+        )
+        {
+            val id = it.arguments?.getInt ("travelId")
+            SpentView(navController, id)
+        }
+        composable(ScreenManager.RegisterSpent.route + "/" + "{travelId}",
+            arguments = listOf(
+                navArgument("travelId") {
+                    type = NavType.IntType
+                })
+        )
+        {
+            val id = it.arguments?.getInt ("travelId")
+            RegisterSpentView(navController, id)
+        }
     }
 }
 
