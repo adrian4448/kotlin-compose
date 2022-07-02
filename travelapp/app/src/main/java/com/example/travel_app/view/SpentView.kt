@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.DisabledByDefault
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,9 +31,11 @@ fun SpentView(navController: NavController, id: Int?) {
     val spentViewModel: SpentViewModel = viewModel(factory = SpentFactory(app))
     var spents: List<Spent> = ArrayList();
 
-    spentViewModel.findAllSpents(onSuccess = {
-        spents = it
-    })
+    if (id != null) {
+        spentViewModel.findAllSpents(id, onSuccess = {
+            spents = it
+        })
+    }
 
     Scaffold(
         topBar = {
@@ -60,6 +64,9 @@ fun SpentView(navController: NavController, id: Int?) {
 @Composable
 fun SpentCard(spent: Spent, navController: NavController) {
     val df = DecimalFormat("0.00")
+    val ctx = LocalContext.current
+    val app = ctx.applicationContext as Application
+    val spentViewModel: SpentViewModel = viewModel(factory = SpentFactory(app))
 
     Card(
         elevation = 8.dp,
@@ -87,6 +94,15 @@ fun SpentCard(spent: Spent, navController: NavController) {
                 Text(text = "Valor: R$ ${df.format(spent.value)}")
                 Text(text = "Local: ${spent.local}")
             }
+            Button(onClick = {
+                spentViewModel.delete(spent)
+                navController.navigate(ScreenManager.Spent.route + "/" + spent.id) {
+
+                }
+            }) {
+                Icon(Icons.Rounded.DisabledByDefault, contentDescription = "Localized description")
+            }
+
         }
     }
 }

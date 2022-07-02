@@ -39,7 +39,7 @@ fun LoginNavigation(navController: NavHostController) {
         composable(ScreenManager.Register.route) { RegisterUserView(navController) }
         composable(ScreenManager.Home.route) { HomeView(navController) }
         composable(ScreenManager.Travel.route) { TravelView(navController) }
-        composable(ScreenManager.RegisterTravel.route) { RegisterTravelView(navController) }
+        composable(ScreenManager.RegisterTravel.route) { RegisterTravelView(navController, id) }
         composable(ScreenManager.Spent.route + "/" + "{travelId}",
             arguments = listOf(
             navArgument("travelId") {

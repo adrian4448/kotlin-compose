@@ -32,10 +32,16 @@ class SpentViewModel(
         }
     }
 
-    fun findAllSpents(onSuccess: (spents: List<Spent>) -> Unit) {
+    fun findAllSpents(travelId: Int, onSuccess: (spents: List<Spent>) -> Unit) {
         viewModelScope.launch {
-            val spents = repository.findAll()
+            val spents = repository.findAllByTravel(travelId)
             onSuccess(spents)
+        }
+    }
+
+    fun delete(spent: Spent) {
+        viewModelScope.launch {
+            repository.delete(spent)
         }
     }
 }

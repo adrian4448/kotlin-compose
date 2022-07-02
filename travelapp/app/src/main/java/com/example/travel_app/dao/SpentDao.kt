@@ -15,8 +15,8 @@ interface SpentDao {
     @Delete
     suspend fun delete(spent: Spent)
 
-    @Query("select * from Spent order by description")
-    suspend fun findAll(): List<Spent>
+    @Query("select * from Spent s where s.travelId = :travelId  order by description")
+    suspend fun findAllByTravel(travelId: Int): List<Spent>
 
     @Query("select * from Spent s where s.id = :id")
     suspend fun findById(id: Int): Spent?

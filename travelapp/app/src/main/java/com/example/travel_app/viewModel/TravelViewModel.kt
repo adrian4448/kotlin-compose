@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.travel_app.entity.Spent
 import com.example.travel_app.entity.TipoViagem
 import com.example.travel_app.entity.Travel
 import com.example.travel_app.repository.TravelRepository
@@ -39,6 +40,12 @@ class TravelViewModel(
         viewModelScope.launch {
             val travels = repository.findAll()
             onSuccess(travels)
+        }
+    }
+
+    fun delete(travel: Travel) {
+        viewModelScope.launch {
+            repository.delete(travel)
         }
     }
 }

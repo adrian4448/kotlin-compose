@@ -22,7 +22,7 @@ import com.example.travel_app.viewModel.TravelViewModel
 import com.example.travel_app.viewModel.UserFactory
 
 @Composable
-fun RegisterTravelView(navController: NavController) {
+fun RegisterTravelView(navController: NavController, id: Int?) {
     val ctx = LocalContext.current
     val app = ctx.applicationContext as Application
     var selectedOption = remember { mutableStateOf("") }

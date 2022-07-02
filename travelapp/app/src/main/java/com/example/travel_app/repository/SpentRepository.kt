@@ -23,7 +23,7 @@ class SpentRepository (app: Application) {
         }
     }
 
-    suspend fun findAll(): List<Spent> = spentDao.findAll()
+    suspend fun findAllByTravel(travelId: Int): List<Spent> = spentDao.findAllByTravel(travelId)
 
     suspend fun findById(id: Int) = spentDao.findById(id)
 

@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.DisabledByDefault
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +62,9 @@ fun TravelView(navController: NavController) {
 @Composable
 fun TravelCard(travel: Travel, navController: NavController) {
     val df = DecimalFormat("0.00")
+    val ctx = LocalContext.current
+    val app = ctx.applicationContext as Application
+    val travelVM: TravelViewModel = viewModel(factory = TravelFactory(app))
 
         Card(
             elevation = 8.dp,
@@ -91,6 +96,14 @@ fun TravelCard(travel: Travel, navController: NavController) {
                         .align(Alignment.CenterVertically)
                         .padding(16.dp)
                 )
+                Button(onClick = {
+                    travelVM.delete(travel)
+                    navController.navigate(ScreenManager.Travel.route) {
+
+                    }
+                }) {
+                    Icon(Icons.Rounded.DisabledByDefault, contentDescription = "Localized description")
+                }
             }
         }
 }
